@@ -38,7 +38,7 @@ export class KonvaService {
     });
 
     circle.on("dblclick", () => {
-      this.pointService.deleteById(point.id).then((_) => this.reloadStage());
+      this.deletePoint(point);
     });
 
     layer.add(circle);
@@ -49,7 +49,7 @@ export class KonvaService {
 
   public addCommentsUnderPoint(point: Point) {
     let testComments = [
-      { text: "testText", backgroundColor: "green" } as Comment,
+      { text: "testsdfsdfsdfsdfsdfsdfdfsdfsdfsdfsdfsfdsText", backgroundColor: "green" } as Comment,
       { text: "testText1", backgroundColor: "green" } as Comment,
       { text: "testText2", backgroundColor: "green" } as Comment,
     ];
@@ -62,6 +62,7 @@ export class KonvaService {
     let table = this.commentTableBuilder.buildTable(testComments);
 
     let div = document.createElement("div");
+    div.id = `pointComment${point.id}`;
     div.style.position = "absolute";
 
     div.style.top = areaPosition.y + "px";
@@ -75,6 +76,11 @@ export class KonvaService {
     console.log("reload");
     this.stage.clear();
     this.initStage(this.stageConfig);
+  }
+
+  private deletePoint(point: Point) {
+    this.pointService.deleteById(point.id).then((_) => this.reloadStage());
+    document.getElementById(`pointComment${point.id}`)?.remove();
   }
 
   // TODO: initStage must just init and don't draw points
