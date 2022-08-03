@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointComments.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointComments.Application", "PointComments.Application\PointComments.Application.csproj", "{C171450F-DB56-4631-AB2B-7D1FB3E7A8BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointComments.WebUI", "PointComments.WebUI\PointComments.WebUI.csproj", "{075CAAB0-7B62-4E85-8648-59271791B3CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{C171450F-DB56-4631-AB2B-7D1FB3E7A8BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C171450F-DB56-4631-AB2B-7D1FB3E7A8BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C171450F-DB56-4631-AB2B-7D1FB3E7A8BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{075CAAB0-7B62-4E85-8648-59271791B3CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{075CAAB0-7B62-4E85-8648-59271791B3CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{075CAAB0-7B62-4E85-8648-59271791B3CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{075CAAB0-7B62-4E85-8648-59271791B3CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
