@@ -1,7 +1,9 @@
 import { Layer } from "konva/lib/Layer";
 import { Circle } from "konva/lib/shapes/Circle";
 import { Stage, StageConfig } from "konva/lib/Stage";
+import { Comment } from "../models/comment.model";
 import { Point } from "../models/point.model";
+import { CommentTableBuilder } from "./commentTableBuilder.service";
 import { PointService } from "./point.service";
 
 export class KonvaService {
@@ -10,13 +12,17 @@ export class KonvaService {
     width: 1000,
     height: 750,
   } as StageConfig;
+
   private readonly pointService: PointService;
+  private readonly commentTableBuilder: CommentTableBuilder;
+
   private stageConfig?: StageConfig;
   private stage: Stage;
 
   constructor(stageConfig?: StageConfig) {
     this.pointService = new PointService();
-   
+    this.commentTableBuilder = new CommentTableBuilder();
+
     this.initStage(stageConfig);
   }
 
@@ -31,13 +37,38 @@ export class KonvaService {
       name: point.id.toString(),
     });
 
-    circle.on("click", () => {
+    circle.on("dblclick", () => {
       this.pointService.deleteById(point.id).then((_) => this.reloadStage());
     });
 
     layer.add(circle);
+
     this.stage.add(layer);
     layer.draw();
+  }
+
+  public addCommentsUnderPoint(point: Point) {
+    let testComments = [
+      { text: "testText", backgroundColor: "green" } as Comment,
+      { text: "testText1", backgroundColor: "green" } as Comment,
+      { text: "testText2", backgroundColor: "green" } as Comment,
+    ];
+
+    let areaPosition = {
+      x: point.x,
+      y: point.y + point.radius + 4,
+    };
+
+    let table = this.commentTableBuilder.buildTable(testComments);
+
+    let div = document.createElement("div");
+    div.style.position = "absolute";
+
+    div.style.top = areaPosition.y + "px";
+    div.style.left = areaPosition.x + "px";
+
+    div.appendChild(table);
+    document.getElementById("wrapper")?.appendChild(div);
   }
 
   private reloadStage() {

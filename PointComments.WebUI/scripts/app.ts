@@ -7,6 +7,7 @@ let pointService = new PointService();
 
 registerClickHandler();
 
+
 function registerClickHandler() {
   let clickableArea = document.getElementById("konva-container");
 
@@ -23,9 +24,10 @@ function registerClickHandler() {
         color: getRandomColor(),
       } as Point;
 
-      pointService
-        .add(point)
-        .then((addedPoint) => konvaService.drawPoint(addedPoint));
+      pointService.add(point).then((addedPoint) => {
+        konvaService.drawPoint(addedPoint);
+        konvaService.addCommentsUnderPoint(addedPoint);
+      });
     }
   };
 }
