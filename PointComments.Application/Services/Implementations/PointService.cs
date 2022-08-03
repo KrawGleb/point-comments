@@ -21,16 +21,16 @@ namespace PointComments.Application.Services.Implementations
         public async Task<IEnumerable<Point>> GetAllPointsAsync()
         {
             var points = await _context.Points
-                                            .Include(p => p.Comments)
-                                            .ToListAsync();
+                .Include(p => p.Comments)
+                .ToListAsync();
             return points;
         }
 
         public async Task<Point> GetPointByIdAsync(int pointId)
         {
             var point = await _context.Points
-                                    .Include(p => p.Comments)
-                                    .FirstOrDefaultAsync(p => p.Id == pointId);
+                .Include(p => p.Comments)
+                .FirstOrDefaultAsync(p => p.Id == pointId);
 
             if (point is null)
             {

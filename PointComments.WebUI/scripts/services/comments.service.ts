@@ -16,13 +16,15 @@ export class CommentsService {
       (c) => !c.id || c.id !== commentId
     );
 
-    return this.pointService.update(this.point);
+    const point = this.pointService.update(this.point);
+    return point;
   }
 
-  public addComment(comment: Comment): Promise<Point> {
+  public async addComment(comment: Comment): Promise<Point> {
     this.point.comments = this.point.comments ?? [];
     this.point.comments.push(comment);
 
-    return this.pointService.update(this.point).then((point) => point);
+    const point = await this.pointService.update(this.point);
+    return point;
   }
 }

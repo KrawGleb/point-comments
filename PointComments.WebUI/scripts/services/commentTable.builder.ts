@@ -100,31 +100,29 @@ export class CommentTableBuilder {
 
     parent?.replaceChild(input, button);
 
-    input.addEventListener("keyup", (event) => {
+    input.addEventListener("keyup", async (event) => {
       if (event.key === "Enter") {
-        commentService
-          .addComment({
-            text: input.value,
-            backgroundColor: getRandomColor(),
-          } as Comment)
-          .then((point) => {
-            table.innerHTML = "";
-            this.fillBodyWithData(table, point);
-          });
+        const point = await commentService.addComment({
+          text: input.value,
+          backgroundColor: getRandomColor(),
+        } as Comment);
+
+        table.innerHTML = "";
+        this.fillBodyWithData(table, point);
       }
     });
   }
 
-  private registerDeleteClickHandler(
+  private async registerDeleteClickHandler(
     table: HTMLTableSectionElement,
     point: Point,
     commentId: number
   ) {
     const commentService = new CommentsService(point);
-
-    commentService.deleteComment(commentId).then((point) => {
-      table.innerHTML = "";
-      this.fillBodyWithData(table, point);
-    });
+    
+    point = await commentService.deleteComment(commentId);
+    
+    table.innerHTML = "";
+    this.fillBodyWithData(table, point);
   }
 }

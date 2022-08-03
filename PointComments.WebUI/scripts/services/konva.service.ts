@@ -62,7 +62,8 @@ export class KonvaService {
     let table = this.commentTableBuilder.build(point);
 
     const div = document.createElement("div");
-    div.id = `pointComment${point.id}`;
+    div.id = `point-comments-table-${point.id}`;
+    div.classList.add('point-comments-table');
     div.style.position = "absolute";
 
     div.style.top = areaPosition.y + "px";
@@ -72,15 +73,28 @@ export class KonvaService {
     document.getElementById("wrapper")?.appendChild(div);
   }
 
-  private reloadStage() {
+  private async reloadStage() {
     this.stage.clear();
+    this.deleteAllCommentsTables();
     this.initStage(this.stageConfig);
-    this.fillStage();
+    await this.fillStage();
   }
 
-  private deletePoint(point: Point) {
-    this.pointService.deleteById(point.id).then((_) => this.reloadStage());
-    document.getElementById(`pointComment${point.id}`)?.remove();
+  private async deletePoint(point: Point) {    
+    this.deleteCommentsTable(point);
+    
+    await this.pointService.deleteById(point.id);
+    await this.reloadStage();
+  }
+
+  private deleteCommentsTable(point: Point) {
+    const commentsTable = document.getElementById(`point-comments-table-${point.id}`);
+    commentsTable?.parentNode?.removeChild(commentsTable);
+  }
+
+  private deleteAllCommentsTables() {
+    const tables = document.querySelectorAll(".point-comments-table");
+    tables.forEach(table => table.remove());
   }
 
   private initStage(stageConfig?: StageConfig) {
@@ -89,7 +103,7 @@ export class KonvaService {
       ? new Stage(stageConfig)
       : new Stage(this.defaultStageConfig);
 
-    this.stage.on("click", (event) => {
+    this.stage.on("click", async (event) => {
       if (event.target.constructor.name === "Stage") {
         let randomRadius = getRandomNumberInRange(10, 50);
         let point = {
@@ -99,16 +113,14 @@ export class KonvaService {
           color: getRandomColor(),
         } as Point;
 
-        this.pointService.add(point).then((addedPoint) => {
-          this.drawPoint(addedPoint);
-        });
+        const addedPoint = await this.pointService.add(point);
+        this.drawPoint(addedPoint);
       }
     });
   }
 
-  private fillStage() {
-    this.pointService
-      .getAll()
-      .then((points) => points.forEach((point) => this.drawPoint(point)));
+  private async fillStage() {
+    const points = await this.pointService.getAll();
+    points.forEach((point) => this.drawPoint(point));
   }
 }
