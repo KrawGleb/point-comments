@@ -38,7 +38,18 @@ export class HttpService {
     })
   }
 
-  public put<T>(url: string) {}
+  public put(url: string, data: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const request = new XMLHttpRequest();
+
+      request.onload = () => resolve(request.response);
+      request.onerror = reject;
+
+      request.open("put", this.getApiUrl(url));
+      request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      request.send(JSON.stringify(data));
+    })
+  }
 
   private getApiUrl(url: string) {
     return BASE_URL + url;

@@ -10,5 +10,6 @@ namespace PointComments.Infrastructure.Persistence
         { }
 
         public DbSet<Point> Points => Set<Point>();
+        public DbSet<Comment> Comments => Set<Comment>();
     }
 }

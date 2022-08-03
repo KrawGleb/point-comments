@@ -25,6 +25,6 @@ export class PointService {
   }
 
   public update(point: Point) {
-    
+    return this.httpService.put("point", point);
   }
 }

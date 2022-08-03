@@ -67,6 +67,12 @@ namespace PointComments.Application.Services.Implementations
             oldPoint.Color = point.Color;
             oldPoint.Comments = point.Comments;
 
+            //_context.Points.Update(oldPoint);
+
+            //_context.Entry(oldPoint).CurrentValues.SetValues(point);
+
+            _context.Entry(oldPoint).State = EntityState.Modified;
+
             await _context.SaveChangesAsync();
         }
 
