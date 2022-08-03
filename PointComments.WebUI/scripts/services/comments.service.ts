@@ -17,6 +17,7 @@ export class CommentsService {
     );
 
     const point = this.pointService.update(this.point);
+    
     return point;
   }
 
@@ -25,6 +26,7 @@ export class CommentsService {
     this.point.comments.push(comment);
 
     const point = await this.pointService.update(this.point);
+
     return point;
   }
 }

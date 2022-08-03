@@ -29,18 +29,18 @@ export class CommentTableBuilder {
     point.comments?.forEach((comment) => {
       const tr = document.createElement("tr");
 
-      const textTd = document.createElement("td");
-      textTd.textContent = comment.text;
-      textTd.style.backgroundColor = comment.backgroundColor;
+      const tdWithText = document.createElement("td");
+      tdWithText.textContent = comment.text;
+      tdWithText.style.backgroundColor = comment.backgroundColor;
 
       const button = this.createDeleteButton(() =>
         this.registerDeleteClickHandler(tbody, point, comment.id)
       );
-      const buttonTd = document.createElement("td");
-      buttonTd.appendChild(button);
+      const tdWithButton = document.createElement("td");
+      tdWithButton.appendChild(button);
 
-      tr.appendChild(textTd);
-      tr.appendChild(buttonTd);
+      tr.appendChild(tdWithText);
+      tr.appendChild(tdWithButton);
 
       tbody.append(tr);
     });

@@ -6,7 +6,7 @@ import {
   getRandomNumberInRange,
 } from "../helpers/random.helpers";
 import { Point } from "../models/point.model";
-import { CommentTableBuilder } from "./commentTable.builder";
+import { CommentTableBuilder as CommentsTableBuilder } from "./commentTable.builder";
 import { PointService } from "./point.service";
 
 export class KonvaService {
@@ -17,14 +17,14 @@ export class KonvaService {
   } as StageConfig;
 
   private readonly pointService: PointService;
-  private readonly commentTableBuilder: CommentTableBuilder;
+  private readonly commentsTableBuilder: CommentsTableBuilder;
 
   private stageConfig?: StageConfig;
   private stage: Stage;
 
   constructor(stageConfig?: StageConfig) {
     this.pointService = new PointService();
-    this.commentTableBuilder = new CommentTableBuilder();
+    this.commentsTableBuilder = new CommentsTableBuilder();
 
     this.initStage(stageConfig);
     this.fillStage();
@@ -46,7 +46,6 @@ export class KonvaService {
     });
 
     layer.add(circle);
-
     this.stage.add(layer);
     layer.draw();
 
@@ -54,16 +53,17 @@ export class KonvaService {
   }
 
   private addCommentsUnderPoint(point: Point) {
+    const marginBottom = 4;
     const areaPosition = {
       x: point.x,
-      y: point.y + point.radius + 4,
+      y: point.y + point.radius + marginBottom,
     };
 
-    let table = this.commentTableBuilder.build(point);
+    let table = this.commentsTableBuilder.build(point);
 
     const div = document.createElement("div");
     div.id = `point-comments-table-${point.id}`;
-    div.classList.add('point-comments-table');
+    div.classList.add("point-comments-table");
     div.style.position = "absolute";
 
     div.style.top = areaPosition.y + "px";
@@ -76,25 +76,28 @@ export class KonvaService {
   private async reloadStage() {
     this.stage.clear();
     this.deleteAllCommentsTables();
+    
     this.initStage(this.stageConfig);
     await this.fillStage();
   }
 
-  private async deletePoint(point: Point) {    
+  private async deletePoint(point: Point) {
     this.deleteCommentsTable(point);
-    
+
     await this.pointService.deleteById(point.id);
     await this.reloadStage();
   }
 
   private deleteCommentsTable(point: Point) {
-    const commentsTable = document.getElementById(`point-comments-table-${point.id}`);
+    const commentsTable = document.getElementById(
+      `point-comments-table-${point.id}`
+    );
     commentsTable?.parentNode?.removeChild(commentsTable);
   }
 
   private deleteAllCommentsTables() {
     const tables = document.querySelectorAll(".point-comments-table");
-    tables.forEach(table => table.remove());
+    tables.forEach((table) => table.remove());
   }
 
   private initStage(stageConfig?: StageConfig) {
