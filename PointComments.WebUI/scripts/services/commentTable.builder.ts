@@ -31,6 +31,7 @@ export class CommentTableBuilder {
 
       const textTd = document.createElement("td");
       textTd.textContent = comment.text;
+      textTd.style.backgroundColor = comment.backgroundColor;
 
       const button = this.createDeleteButton(() =>
         this.registerDeleteClickHandler(tbody, point, comment.id)
