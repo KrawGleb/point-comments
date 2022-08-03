@@ -19,12 +19,17 @@ namespace PointComments.Application.Services.Implementations
 
         public async Task<IEnumerable<Point>> GetAllPointsAsync()
         {
-            return await _context.Points.ToListAsync();
+            var points = await _context.Points
+                                            .Include(p => p.Comments)
+                                            .ToListAsync();
+            return points;
         }
 
         public async Task<Point> GetPointByIdAsync(int pointId)
         {
-            var point = _context.Points.Find(pointId);
+            var point = await _context.Points
+                                    .Include(p => p.Comments)
+                                    .FirstOrDefaultAsync(p => p.Id == pointId);
 
             if (point is null)
             {
@@ -47,7 +52,7 @@ namespace PointComments.Application.Services.Implementations
             var point = await GetPointByIdAsync(pointId);
 
             _context.Points.Remove(point);
-            
+
             await _context.SaveChangesAsync();
         }
 
