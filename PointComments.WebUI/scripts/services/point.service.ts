@@ -9,7 +9,7 @@ export class PointService {
   }
 
   public getAll() {
-    return this.httpService.get<Point[]>('point');
+    return this.httpService.get<Point[]>("point");
   }
 
   public getById(id: number) {
@@ -17,6 +17,10 @@ export class PointService {
   }
 
   public add(point: Point) {
-    return this.httpService.post('point', point);
+    return this.httpService.post<Point>("point", point);
+  }
+
+  public deleteById(id: number) {
+    return this.httpService.delete<Point>(`point/${id}`);
   }
 }

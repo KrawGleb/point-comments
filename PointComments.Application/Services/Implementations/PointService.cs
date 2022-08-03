@@ -47,13 +47,14 @@ namespace PointComments.Application.Services.Implementations
             return point;
         }
 
-        public async Task RemovePointByIdAsync(int pointId)
+        public async Task<Point> DeletePointByIdAsync(int pointId)
         {
             var point = await GetPointByIdAsync(pointId);
 
             _context.Points.Remove(point);
 
             await _context.SaveChangesAsync();
+            return point;
         }
 
         public async Task AddCommentToPointAsync(int pointId, Comment comment)

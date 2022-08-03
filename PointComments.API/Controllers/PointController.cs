@@ -40,5 +40,13 @@ namespace PointComments.API.Controllers
 
             return CreatedAtAction("GetById", new { id = addedPoint.Id }, addedPoint);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+        {
+            var point = await _pointService.DeletePointByIdAsync(id);
+
+            return Ok(point);
+        }
     }
 }
