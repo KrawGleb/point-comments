@@ -7,7 +7,7 @@ gulp.task('scripts', function() {
     var tsResult = gulp.src("app/**/*.ts") // or tsProject.src()
         .pipe(tsProject());
  
-    return tsResult.js.pipe(gulp.dest('release'));
+    return tsResult.js.pipe(gulp.dest('js'));
 });
  
 // gulp.task('watch', ['scripts'], function() {
