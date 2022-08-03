@@ -5,9 +5,9 @@ import { Point } from "../models/point.model";
 
 export class KonvaService {
   private readonly defaultStageConfig = {
-    container: "container",
+    container: "konva-container",
     width: 1000,
-    height: 1000,
+    height: 750,
   } as StageConfig;
 
   private readonly stage: Stage;
