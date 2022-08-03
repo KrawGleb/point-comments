@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PointComments.Application\PointComments.Application.csproj" />
     <ProjectReference Include="..\PointComments.Infrastructure\PointComments.Infrastructure.csproj" />
   </ItemGroup>
 

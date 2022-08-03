@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using PointComments.Application;
 using PointComments.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace PointComments.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration);
+            services.AddApplication();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
