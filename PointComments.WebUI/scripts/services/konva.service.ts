@@ -54,18 +54,12 @@ export class KonvaService {
   }
 
   private addCommentsUnderPoint(point: Point) {
-    const comments = point.comments;
-
-    if (!comments || comments.length === 0) {
-      return;
-    }
-
     const areaPosition = {
       x: point.x,
       y: point.y + point.radius + 4,
     };
 
-    let table = this.commentTableBuilder.build(comments);
+    let table = this.commentTableBuilder.build(point);
 
     const div = document.createElement("div");
     div.id = `pointComment${point.id}`;

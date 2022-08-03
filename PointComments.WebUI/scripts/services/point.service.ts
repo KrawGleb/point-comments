@@ -23,4 +23,8 @@ export class PointService {
   public deleteById(id: number) {
     return this.httpService.delete<Point>(`point/${id}`);
   }
+
+  public update(point: Point) {
+    
+  }
 }

@@ -57,6 +57,19 @@ namespace PointComments.Application.Services.Implementations
             return point;
         }
 
+        public async Task UpdateAsync(Point point)
+        {
+            var oldPoint = await GetPointByIdAsync(point.Id);
+
+            oldPoint.X = point.X;
+            oldPoint.Y = point.Y;
+            oldPoint.Radius = point.Radius;
+            oldPoint.Color = point.Color;
+            oldPoint.Comments = point.Comments;
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task AddCommentToPointAsync(int pointId, Comment comment)
         {
             var point = await GetPointByIdAsync(pointId);

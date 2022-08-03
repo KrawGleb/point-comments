@@ -38,6 +38,8 @@ export class HttpService {
     })
   }
 
+  public put<T>(url: string) {}
+
   private getApiUrl(url: string) {
     return BASE_URL + url;
   }
