@@ -52,9 +52,9 @@ namespace PointComments.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateAsync([FromBody] Point point)
         {
-            await _pointService.UpdateAsync(point);
+            var updatedPoint = await _pointService.UpdateAsync(point);
 
-            return Ok();
+            return Ok(updatedPoint);
         }
     }
 }

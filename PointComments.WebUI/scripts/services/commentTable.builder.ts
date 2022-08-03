@@ -101,13 +101,15 @@ export class CommentTableBuilder {
 
     input.addEventListener("keyup", (event) => {
       if (event.key === "Enter") {
-        const point = commentService.addComment({
-          text: input.value,
-          backgroundColor: getRandomColor(),
-        } as Comment);
-
-        table.innerHTML = "";
-        this.fillBodyWithData(table, point);
+        commentService
+          .addComment({
+            text: input.value,
+            backgroundColor: getRandomColor(),
+          } as Comment)
+          .then((point) => {
+            table.innerHTML = "";
+            this.fillBodyWithData(table, point);
+          });
       }
     });
   }
@@ -119,9 +121,9 @@ export class CommentTableBuilder {
   ) {
     const commentService = new CommentsService(point);
 
-    point = commentService.deleteComment(commentId);
-
-    table.innerHTML = "";
-    this.fillBodyWithData(table, point);
+    commentService.deleteComment(commentId).then((point) => {
+      table.innerHTML = "";
+      this.fillBodyWithData(table, point);
+    });
   }
 }

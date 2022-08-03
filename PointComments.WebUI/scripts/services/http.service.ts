@@ -38,11 +38,11 @@ export class HttpService {
     })
   }
 
-  public put(url: string, data: any): Promise<any> {
+  public put<T>(url: string, data: any): Promise<T> {
     return new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
 
-      request.onload = () => resolve(request.response);
+      request.onload = () => resolve(JSON.parse(request.response));
       request.onerror = reject;
 
       request.open("put", this.getApiUrl(url));

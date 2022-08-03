@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PointComments.Application.Services.Interfaces;
@@ -57,23 +58,47 @@ namespace PointComments.Application.Services.Implementations
             return point;
         }
 
-        public async Task UpdateAsync(Point point)
+        public async Task<Point> UpdateAsync(Point point)
         {
-            var oldPoint = await GetPointByIdAsync(point.Id);
+            var savedPoint = await GetPointByIdAsync(point.Id);
 
-            oldPoint.X = point.X;
-            oldPoint.Y = point.Y;
-            oldPoint.Radius = point.Radius;
-            oldPoint.Color = point.Color;
-            oldPoint.Comments = point.Comments;
+            if (savedPoint is not null)
+            {
+                _context.Entry(savedPoint).CurrentValues.SetValues(point);
 
-            //_context.Points.Update(oldPoint);
+                foreach (var comment in savedPoint.Comments)
+                {
+                    if (!point.Comments.Any(c => c.Id == comment.Id))
+                    {
+                        _context.Comments.Remove(comment);
+                    }
+                }
 
-            //_context.Entry(oldPoint).CurrentValues.SetValues(point);
+                foreach (var commment in point.Comments)
+                {
+                    var savedComment = savedPoint.Comments
+                        .Where(c => c.Id == commment.Id && c.Id != default)
+                        .SingleOrDefault();
 
-            _context.Entry(oldPoint).State = EntityState.Modified;
+                    if (savedComment is not null)
+                    {
+                        _context.Entry(savedComment).CurrentValues.SetValues(commment);
+                    }
+                    else
+                    {
+                        var newComment = new Comment
+                        {
+                            Text = commment.Text,
+                            BackgroundColor = commment.BackgroundColor
+                        };
+                        savedPoint.Comments.Add(newComment);
+                    }
+                }
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
+
+            return savedPoint;
         }
 
         public async Task AddCommentToPointAsync(int pointId, Comment comment)

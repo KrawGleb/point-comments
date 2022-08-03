@@ -10,7 +10,7 @@ namespace PointComments.Application.Services.Interfaces
         Task<Point> GetPointByIdAsync(int pointId);
         Task<Point> AddPointAsync(Point point);
         Task<Point> DeletePointByIdAsync(int pointId);
-        Task UpdateAsync(Point point);
+        Task<Point> UpdateAsync(Point point);
         Task AddCommentToPointAsync(int pointId, Comment comment);
     }
 }
