@@ -1,9 +1,12 @@
 import { Layer } from "konva/lib/Layer";
 import { Circle } from "konva/lib/shapes/Circle";
 import { Stage, StageConfig } from "konva/lib/Stage";
-import { Comment } from "../models/comment.model";
+import {
+  getRandomColor,
+  getRandomNumberInRange,
+} from "../helpers/random.helpers";
 import { Point } from "../models/point.model";
-import { CommentTableBuilder } from "./commentTableBuilder.service";
+import { CommentTableBuilder } from "./commentTable.builder";
 import { PointService } from "./point.service";
 
 export class KonvaService {
@@ -24,10 +27,11 @@ export class KonvaService {
     this.commentTableBuilder = new CommentTableBuilder();
 
     this.initStage(stageConfig);
+    this.fillStage();
   }
 
   public drawPoint(point: Point) {
-    let layer = new Layer();
+    const layer = new Layer();
 
     let circle = new Circle({
       x: point.x,
@@ -45,23 +49,25 @@ export class KonvaService {
 
     this.stage.add(layer);
     layer.draw();
+
+    this.addCommentsUnderPoint(point);
   }
 
-  public addCommentsUnderPoint(point: Point) {
-    let testComments = [
-      { text: "testsdfsdfsdfsdfsdfsdfdfsdfsdfsdfsdfsfdsText", backgroundColor: "green" } as Comment,
-      { text: "testText1", backgroundColor: "green" } as Comment,
-      { text: "testText2", backgroundColor: "green" } as Comment,
-    ];
+  private addCommentsUnderPoint(point: Point) {
+    const comments = point.comments;
 
-    let areaPosition = {
+    if (!comments || comments.length === 0) {
+      return;
+    }
+
+    const areaPosition = {
       x: point.x,
       y: point.y + point.radius + 4,
     };
 
-    let table = this.commentTableBuilder.buildTable(testComments);
+    let table = this.commentTableBuilder.build(comments);
 
-    let div = document.createElement("div");
+    const div = document.createElement("div");
     div.id = `pointComment${point.id}`;
     div.style.position = "absolute";
 
@@ -73,9 +79,9 @@ export class KonvaService {
   }
 
   private reloadStage() {
-    console.log("reload");
     this.stage.clear();
     this.initStage(this.stageConfig);
+    this.fillStage();
   }
 
   private deletePoint(point: Point) {
@@ -83,13 +89,30 @@ export class KonvaService {
     document.getElementById(`pointComment${point.id}`)?.remove();
   }
 
-  // TODO: initStage must just init and don't draw points
   private initStage(stageConfig?: StageConfig) {
     this.stageConfig = stageConfig;
     this.stage = !!stageConfig
       ? new Stage(stageConfig)
       : new Stage(this.defaultStageConfig);
 
+    this.stage.on("click", (event) => {
+      if (event.target.constructor.name === "Stage") {
+        let randomRadius = getRandomNumberInRange(10, 50);
+        let point = {
+          x: event.evt.offsetX,
+          y: event.evt.offsetY,
+          radius: randomRadius,
+          color: getRandomColor(),
+        } as Point;
+
+        this.pointService.add(point).then((addedPoint) => {
+          this.drawPoint(addedPoint);
+        });
+      }
+    });
+  }
+
+  private fillStage() {
     this.pointService
       .getAll()
       .then((points) => points.forEach((point) => this.drawPoint(point)));

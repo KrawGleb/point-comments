@@ -1,8 +1,8 @@
 import { Comment } from "../models/comment.model";
 
 export class CommentTableBuilder {
-  public buildTable(comments: Comment[]) {
-    let table = document.createElement("table");
+  public build(comments: Comment[]) {
+    const table = document.createElement("table");
     table.classList.add("table");
 
     table.style.textAlign = "center";
@@ -13,7 +13,7 @@ export class CommentTableBuilder {
   }
 
   private addBody(table: HTMLTableElement, comments: Comment[]) {
-    let tbody = document.createElement("tbody");
+    const tbody = document.createElement("tbody");
 
     this.fillBodyWithData(tbody, comments);
 
@@ -25,8 +25,8 @@ export class CommentTableBuilder {
     comments: Comment[]
   ) {
     comments.forEach((comment) => {
-      let tr = document.createElement("tr");
-      let td = document.createElement("td");
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
       td.textContent = comment.text;
 
       tr.appendChild(td);
