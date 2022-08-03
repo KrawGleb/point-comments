@@ -5,7 +5,7 @@ module.exports = {
     entry: "./scripts/app.ts",
     output: {
         path: path.resolve(__dirname, "wwwroot"),
-        filename: "[name].[chunkhash].js",
+        filename: "scripts.js",
         publicPath: "/",
     },
     resolve: {
