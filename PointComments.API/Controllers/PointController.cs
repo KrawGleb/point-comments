@@ -17,7 +17,7 @@ namespace PointComments.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAsync()
         {
             var points = await _pointService.GetAllPointsAsync();
 
@@ -33,11 +33,11 @@ namespace PointComments.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAsync([FromBody] Point point)
+        public async Task<IActionResult> PostAsync([FromBody] Point point)
         {
-            var addedPoint = await _pointService.AddPointAsync(point);
+            var savedPoint = await _pointService.AddPointAsync(point);
 
-            return CreatedAtAction("GetById", new { id = addedPoint.Id }, addedPoint);
+            return CreatedAtAction("GetById", new { id = savedPoint.Id }, savedPoint);
         }
 
         [HttpDelete("{id}")]
@@ -49,7 +49,7 @@ namespace PointComments.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync([FromBody] Point point)
+        public async Task<IActionResult> PutAsync([FromBody] Point point)
         {
             var updatedPoint = await _pointService.UpdateAsync(point);
 
