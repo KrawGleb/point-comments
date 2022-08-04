@@ -6,7 +6,6 @@ using PointComments.Application.Points.Commands.DeletePoint;
 using PointComments.Application.Points.Commands.UpdatePoint;
 using PointComments.Application.Points.Queries.GetPointByIdQuery;
 using PointComments.Application.Points.Queries.GetPointsQuery;
-using PointComments.Application.Services.Interfaces;
 using PointComments.Domain.Entities;
 
 namespace PointComments.API.Controllers
@@ -15,13 +14,6 @@ namespace PointComments.API.Controllers
     [ApiController]
     public class PointsController : ApiControllerBase
     {
-        private readonly IPointService _pointService;
-
-        public PointsController(IPointService pointService)
-        {
-            _pointService = pointService;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<Point>>> Get()
         {
