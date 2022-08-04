@@ -3,9 +3,15 @@
 </br>
 
 <h1>Stack</h1>
+Backend
 <ul>
     <li>.NET 5 - Web API</li>
     <li>Entity Framework Core - In-Memory, code-first database</li>
+    <li>MediatR - CQRS pattern</li>
+    <li>Fluent Validation - model validation</li>
+</ul>
+Frontend
+<ul>
     <li>Typescript - Client app</li>
     <li>AJAX - HTTP requests</li>
     <li>Konva.js - drawing</li>
