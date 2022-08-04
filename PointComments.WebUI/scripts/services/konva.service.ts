@@ -76,7 +76,7 @@ export class KonvaService {
   private async reloadStage() {
     this.stage.clear();
     this.deleteAllCommentsTables();
-    
+
     this.initStage(this.stageConfig);
     await this.fillStage();
   }
@@ -97,7 +97,7 @@ export class KonvaService {
 
   private deleteAllCommentsTables() {
     const tables = document.querySelectorAll(".point-comments-table");
-    tables.forEach((table) => table.remove());
+    tables.forEach((table) => table.parentNode?.removeChild(table));
   }
 
   private initStage(stageConfig?: StageConfig) {
