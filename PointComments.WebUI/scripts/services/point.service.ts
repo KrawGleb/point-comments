@@ -9,22 +9,22 @@ export class PointService {
   }
 
   public getAll() {
-    return this.httpService.get<Point[]>("point");
+    return this.httpService.get<Point[]>("points");
   }
 
   public getById(id: number) {
-    return this.httpService.get<Point>(`point/${id}`);
+    return this.httpService.get<Point>(`points/${id}`);
   }
 
   public add(point: Point) {
-    return this.httpService.post<Point>("point", point);
+    return this.httpService.post<Point>("points", point);
   }
 
   public deleteById(id: number) {
-    return this.httpService.delete<Point>(`point/${id}`);
+    return this.httpService.delete<Point>(`points/${id}`);
   }
 
   public update(point: Point) {
-    return this.httpService.put<Point>("point", point);
+    return this.httpService.put<Point>("points", point);
   }
 }
