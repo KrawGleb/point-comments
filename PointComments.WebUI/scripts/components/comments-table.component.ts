@@ -1,14 +1,20 @@
+import { getRandomColor } from "../helpers/random.helpers";
 import { Comment } from "../models/comment.model";
 import { ComponentBase } from "./base.component";
+import { PointComponent } from "./point.component";
 
 export class CommentsTableComponent extends ComponentBase {
   private readonly comments: Comment[];
+  private readonly parentRef: PointComponent;
 
   private table: HTMLTableElement;
 
-  constructor(comments: Comment[]) {
+  constructor(
+    comments: Comment[],
+    parentRef: PointComponent) {
     super();
 
+    this.parentRef = parentRef;
     this.comments = comments ?? [];
 
     this.init();
@@ -16,6 +22,11 @@ export class CommentsTableComponent extends ComponentBase {
 
   public getTable(): HTMLTableElement {
     return this.table;
+  }
+
+  public getComments(): Comment[] 
+  {
+    return this.comments;
   }
 
   public remove(): void {
@@ -59,19 +70,20 @@ export class CommentsTableComponent extends ComponentBase {
       const deleteButton = this.createDeleteButton(() => {
         // TODO (Mb event)
       });
-      const tdWithDeleteButton = document.createElement("td")
-      tdWithAddButton.appendChild(deleteButton);
+      const tdWithDeleteButton = document.createElement("td");
+      tdWithDeleteButton.appendChild(deleteButton);
 
-      tr.appendChild(tdWithText).appendChild(tdWithDeleteButton);
+      tr.appendChild(tdWithText);
+      tr.appendChild(tdWithDeleteButton);
 
       tbody.append(tr);
     });
 
     const tr = document.createElement("tr");
 
-    const addButton = this.createAddButton(() => {
-      // TODO (Mb event)
-    });
+    const addButton = this.createAddButton((event) =>
+      this.addClickHandler(addButton, event)
+    );
     const tdWithAddButton = document.createElement("td");
     tdWithAddButton.appendChild(addButton);
 
@@ -81,7 +93,9 @@ export class CommentsTableComponent extends ComponentBase {
     return tbody;
   }
 
-  private createDeleteButton(clickHandler: () => void): HTMLButtonElement {
+  private createDeleteButton(
+    clickHandler: (event?: MouseEvent) => void
+  ): HTMLButtonElement {
     const button = document.createElement("button");
     button.classList.add("btn");
     button.classList.add("btn-danger");
@@ -97,7 +111,9 @@ export class CommentsTableComponent extends ComponentBase {
     return button;
   }
 
-  private createAddButton(clickHandler: () => void): HTMLButtonElement {
+  private createAddButton(
+    clickHandler: (event?: MouseEvent) => void
+  ): HTMLButtonElement {
     const button = document.createElement("button");
     button.classList.add("btn");
     button.classList.add("btn-success");
@@ -112,4 +128,33 @@ export class CommentsTableComponent extends ComponentBase {
 
     return button;
   }
+
+  private addClickHandler(button: HTMLButtonElement, event?: MouseEvent) {
+    if (!event) {
+      return;
+    }
+
+    const parent = button.parentElement;
+    const input = document.createElement("input");
+
+    parent?.replaceChild(input, button);
+
+    input.addEventListener("keyup", async (event) => {
+      if (event.key === "Enter") {
+        const text = input.value;
+
+        this.comments.push({
+          text,
+          backgroundColor: getRandomColor(),
+        } as Comment);
+
+        await this.parentRef.update();
+
+        this.table.innerHTML = "";
+        this.table = this.addBody(this.table, this.comments);
+      }
+    });
+  }
+
+  private deleteClickHandler(event?: MouseEvent) {}
 }

@@ -17,7 +17,7 @@ export class PointComponent extends ComponentBase {
     super();
 
     this.point = point;
-    this.commentsTable = new CommentsTableComponent(point.comments);
+    this.commentsTable = new CommentsTableComponent(point.comments, this);
     this.pointsService = new PointsService();
   }
 
@@ -25,6 +25,12 @@ export class PointComponent extends ComponentBase {
     this.layerRef.remove();
     this.commentsTable.remove();
     this.pointsService.deleteById(this.point.id);
+  }
+
+  public async update(): Promise<void> {
+    this.point.comments = this.commentsTable.getComments();
+
+    await this.pointsService.update(this.point);
   }
 
   public drawOnStage(stageRef: Stage, withCommentsTable: boolean = true): void {
