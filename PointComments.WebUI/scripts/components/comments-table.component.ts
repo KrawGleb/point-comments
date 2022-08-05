@@ -4,14 +4,12 @@ import { ComponentBase } from "./base.component";
 import { PointComponent } from "./point.component";
 
 export class CommentsTableComponent extends ComponentBase {
-  private readonly comments: Comment[];
   private readonly parentRef: PointComponent;
-
+  
+  private comments: Comment[];
   private table: HTMLTableElement;
 
-  constructor(
-    comments: Comment[],
-    parentRef: PointComponent) {
+  constructor(comments: Comment[], parentRef: PointComponent) {
     super();
 
     this.parentRef = parentRef;
@@ -24,8 +22,7 @@ export class CommentsTableComponent extends ComponentBase {
     return this.table;
   }
 
-  public getComments(): Comment[] 
-  {
+  public getComments(): Comment[] {
     return this.comments;
   }
 
@@ -67,8 +64,8 @@ export class CommentsTableComponent extends ComponentBase {
       tdWithText.textContent = comment.text;
       tdWithText.style.background = comment.backgroundColor;
 
-      const deleteButton = this.createDeleteButton(() => {
-        // TODO (Mb event)
+      const deleteButton = this.createDeleteButton((event) => {
+        this.deleteClickHandler(deleteButton, comment, event);
       });
       const tdWithDeleteButton = document.createElement("td");
       tdWithDeleteButton.appendChild(deleteButton);
@@ -130,10 +127,6 @@ export class CommentsTableComponent extends ComponentBase {
   }
 
   private addClickHandler(button: HTMLButtonElement, event?: MouseEvent) {
-    if (!event) {
-      return;
-    }
-
     const parent = button.parentElement;
     const input = document.createElement("input");
 
@@ -156,5 +149,16 @@ export class CommentsTableComponent extends ComponentBase {
     });
   }
 
-  private deleteClickHandler(event?: MouseEvent) {}
+  private async deleteClickHandler(
+    button: HTMLButtonElement,
+    comment: Comment,
+    event?: MouseEvent
+  ) {
+    this.comments = this.comments.filter((c) => c !== comment);
+
+    await this.parentRef.update();
+
+    this.table.innerHTML = "";
+    this.table = this.addBody(this.table, this.comments);
+  }
 }
