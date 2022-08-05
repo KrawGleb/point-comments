@@ -16,7 +16,7 @@
   \************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_app_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/app.component */ \"./scripts/components/app.component.ts\");\n\r\n//const konvaService = new KonvaService();\r\n_components_app_component__WEBPACK_IMPORTED_MODULE_0__.AppComponent.init();\r\n\n\n//# sourceURL=webpack://pointcomments.webui/./scripts/app.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_app_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/app.component */ \"./scripts/components/app.component.ts\");\n\r\n_components_app_component__WEBPACK_IMPORTED_MODULE_0__.AppComponent.init();\r\n\n\n//# sourceURL=webpack://pointcomments.webui/./scripts/app.ts?");
 
 /***/ }),
 
