@@ -1,14 +1,14 @@
 import { Comment } from "../models/comment.model";
 import { Point } from "../models/point.model";
-import { PointService } from "./point.service";
+import { PointsService } from "./points.service";
 
 export class CommentsService {
   private readonly point: Point;
-  private readonly pointService: PointService;
+  private readonly pointService: PointsService;
 
   constructor(point: Point) {
     this.point = point;
-    this.pointService = new PointService();
+    this.pointService = new PointsService();
   }
 
   public deleteComment(commentId: number): Promise<Point> {

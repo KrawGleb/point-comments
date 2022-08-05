@@ -1,7 +1,7 @@
 import { Point } from "../models/point.model";
 import { HttpService } from "./http.service";
 
-export class PointService {
+export class PointsService {
   private readonly httpService: HttpService;
 
   constructor() {

@@ -10,7 +10,7 @@ namespace PointComments.Domain.Entities
         public int X { get; set; }
         public int Y { get; set; }
         public float Radius { get; set; }
-        public string Color { get; set; };
+        public string Color { get; set; }
         public List<Comment> Comments { get; set; } 
     }
 }

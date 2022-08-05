@@ -10,7 +10,7 @@ namespace PointComments.Application.Points.Commands.UpdatePoint
         public int X { get; set; }
         public int Y { get; set; }
         public float Radius { get; set; }
-        public string Color { get; set; } = "Black";
+        public string Color { get; set; } = "black";
         public List<Comment> Comments { get; set; }
     }
 }

@@ -6,8 +6,8 @@ import {
   getRandomNumberInRange,
 } from "../helpers/random.helpers";
 import { Point } from "../models/point.model";
-import { CommentTableBuilder as CommentsTableBuilder } from "./commentTable.builder";
-import { PointService } from "./point.service";
+import { CommentTableBuilder as CommentsTableBuilder } from "./comment-table.builder";
+import { PointsService } from "./points.service";
 
 export class KonvaService {
   private readonly defaultStageConfig = {
@@ -16,14 +16,14 @@ export class KonvaService {
     height: 750,
   } as StageConfig;
 
-  private readonly pointService: PointService;
+  private readonly pointService: PointsService;
   private readonly commentsTableBuilder: CommentsTableBuilder;
 
   private stageConfig?: StageConfig;
   private stage: Stage;
 
   constructor(stageConfig?: StageConfig) {
-    this.pointService = new PointService();
+    this.pointService = new PointsService();
     this.commentsTableBuilder = new CommentsTableBuilder();
 
     this.initStage(stageConfig);
