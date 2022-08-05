@@ -5,7 +5,7 @@ import { PointComponent } from "./point.component";
 
 export class CommentsTableComponent extends ComponentBase {
   private readonly parentRef: PointComponent;
-  
+
   private comments: Comment[];
   private table: HTMLTableElement;
 
@@ -65,7 +65,7 @@ export class CommentsTableComponent extends ComponentBase {
       tdWithText.style.background = comment.backgroundColor;
 
       const deleteButton = this.createDeleteButton((event) => {
-        this.deleteClickHandler(deleteButton, comment, event);
+        this.deleteClickHandler(comment);
       });
       const tdWithDeleteButton = document.createElement("td");
       tdWithDeleteButton.appendChild(deleteButton);
@@ -149,11 +149,7 @@ export class CommentsTableComponent extends ComponentBase {
     });
   }
 
-  private async deleteClickHandler(
-    button: HTMLButtonElement,
-    comment: Comment,
-    event?: MouseEvent
-  ) {
+  private async deleteClickHandler(comment: Comment) {
     this.comments = this.comments.filter((c) => c !== comment);
 
     await this.parentRef.update();

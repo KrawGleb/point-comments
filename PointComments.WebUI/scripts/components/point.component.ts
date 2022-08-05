@@ -1,7 +1,6 @@
 import { Layer } from "konva/lib/Layer";
 import { Circle } from "konva/lib/shapes/Circle";
 import { Stage } from "konva/lib/Stage";
-import { POINT_DELETED_EVENT } from "../constants/point-events.constants";
 import { Point } from "../models/point.model";
 import { PointsService } from "../services/points.service";
 import { ComponentBase } from "./base.component";
@@ -11,6 +10,7 @@ export class PointComponent extends ComponentBase {
   private readonly point: Point;
   private readonly commentsTable: CommentsTableComponent;
   private readonly pointsService: PointsService;
+  
   private layerRef: Layer;
 
   constructor(point: Point) {
@@ -71,7 +71,6 @@ export class PointComponent extends ComponentBase {
     divWithTable.style.top = areaPosition.y + "px";
     divWithTable.style.left = areaPosition.x + "px";
 
-    // TODO Update this logic
     document.getElementById("wrapper")?.appendChild(divWithTable);
   }
 }

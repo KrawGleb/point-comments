@@ -1,6 +1,5 @@
 import { KonvaEventObject } from "konva/lib/Node";
 import { Stage, StageConfig } from "konva/lib/Stage";
-import { POINT_DELETED_EVENT } from "../constants/point-events.constants";
 import {
   getRandomColor,
   getRandomNumberInRange,
