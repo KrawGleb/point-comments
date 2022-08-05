@@ -1,18 +1,17 @@
+import { Subject } from "rxjs";
 import { getRandomColor } from "../helpers/random.helpers";
 import { Comment } from "../models/comment.model";
 import { ComponentBase } from "./base.component";
 import { PointComponent } from "./point.component";
 
 export class CommentsTableComponent extends ComponentBase {
-  private readonly parentRef: PointComponent;
-
   private comments: Comment[];
   private table: HTMLTableElement;
+  public onChanged: Subject<Comment[]> = new Subject<Comment[]>();
 
-  constructor(comments: Comment[], parentRef: PointComponent) {
+  constructor(comments: Comment[]) {
     super();
 
-    this.parentRef = parentRef;
     this.comments = comments ?? [];
 
     this.init();
@@ -20,10 +19,6 @@ export class CommentsTableComponent extends ComponentBase {
 
   public getTable(): HTMLTableElement {
     return this.table;
-  }
-
-  public getComments(): Comment[] {
-    return this.comments;
   }
 
   public remove(): void {
@@ -141,7 +136,7 @@ export class CommentsTableComponent extends ComponentBase {
           backgroundColor: getRandomColor(),
         } as Comment);
 
-        await this.parentRef.update();
+        this.onChanged.next(this.comments);
 
         this.table.innerHTML = "";
         this.table = this.addBody(this.table, this.comments);
@@ -152,7 +147,7 @@ export class CommentsTableComponent extends ComponentBase {
   private async deleteClickHandler(comment: Comment) {
     this.comments = this.comments.filter((c) => c !== comment);
 
-    await this.parentRef.update();
+    this.onChanged.next(this.comments);
 
     this.table.innerHTML = "";
     this.table = this.addBody(this.table, this.comments);

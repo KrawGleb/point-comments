@@ -1,23 +1,33 @@
 import { Layer } from "konva/lib/Layer";
 import { Circle } from "konva/lib/shapes/Circle";
 import { Stage } from "konva/lib/Stage";
+import { takeUntil, tap } from "rxjs";
+import { Comment } from "../models/comment.model";
 import { Point } from "../models/point.model";
 import { PointsService } from "../services/points.service";
-import { ComponentBase } from "./base.component";
 import { CommentsTableComponent } from "./comments-table.component";
+import { DestroyableComponent } from "./destroyable.component";
 
-export class PointComponent extends ComponentBase {
+export class PointComponent extends DestroyableComponent {
   private readonly point: Point;
   private readonly commentsTable: CommentsTableComponent;
   private readonly pointsService: PointsService;
-  
+
   private layerRef: Layer;
 
   constructor(point: Point) {
     super();
 
     this.point = point;
-    this.commentsTable = new CommentsTableComponent(point.comments, this);
+    this.commentsTable = new CommentsTableComponent(point.comments);
+    this.commentsTable.onChanged
+      .pipe(
+        takeUntil(this.onDestroy),
+        tap(async (comments) => {
+          await this.update(comments);
+        })
+      )
+      .subscribe();
     this.pointsService = new PointsService();
   }
 
@@ -25,10 +35,11 @@ export class PointComponent extends ComponentBase {
     this.layerRef.remove();
     this.commentsTable.remove();
     this.pointsService.deleteById(this.point.id);
+    this.destroy();
   }
 
-  public async update(): Promise<void> {
-    this.point.comments = this.commentsTable.getComments();
+  public async update(comments: Comment[]): Promise<void> {
+    this.point.comments = comments;
 
     await this.pointsService.update(this.point);
   }
