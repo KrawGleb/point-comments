@@ -31,6 +31,7 @@ export class StageComponent extends ComponentBase {
 
   public async init(): Promise<void> {
     this.initStage();
+    this.fitStageIntoParentContainer();
 
     const points = await this.pointsService.getAll();
     points.forEach((point) => {
@@ -73,5 +74,17 @@ export class StageComponent extends ComponentBase {
     this.stageRef.clear();
 
     this.points.forEach((p) => p.drawOnStage(this.stageRef, withCommentsTable));
+  }
+
+  private fitStageIntoParentContainer() {
+    const container = document.querySelector(
+      `#${this.stageConfig.container}`
+    ) as HTMLElement;
+    const containerWidth = container.offsetWidth;
+
+    const scale = containerWidth / this.stageConfig.width;
+
+    this.stageRef.width(this.stageConfig.width * scale);
+    this.stageRef.height(this.stageConfig.height * scale);
   }
 }

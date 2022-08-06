@@ -1,0 +1,11 @@
+.konva-wrapper {
+    position: relative;
+}
+
+.full-screen {
+    height: 100vh;
+}
+
+.editable-area {
+    background-color: beige;
+}
